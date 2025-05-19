@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Classification System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+    <h1 class="text-2xl font-bold text-center text-gray-900 mb-4">Image Classification</h1>
+    <p class="text-center text-gray-600 mb-6">Upload an animal image (cat, dog, or wild) to classify it!</p>
+
+    <!-- Image Upload Section -->
+    <div class="flex justify-center mb-4">
+      <label class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg cursor-pointer hover:bg-teal-600">
+        Upload Image
+        <input type="file" id="imageUpload" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+      </label>
+    </div>
+
+    <!-- Image Preview -->
+    <div id="imagePreview" class="flex justify-center mb-4 hidden">
+      <img id="uploadedImage" class="max-w-full h-auto rounded-lg" alt="Uploaded Image">
+    </div>
+
+    <!-- Results Section -->
+    <div id="results" class="hidden">
+      <h2 class="text-lg font-semibold text-gray-900 mb-2">Classification Result</h2>
+      <p id="prediction" class="text-gray-700 mb-2"></p>
+      <h3 class="text-md font-semibold text-gray-900 mb-1">Details</h3>
+      <p id="details" class="text-gray-600"></p>
+    </div>
+  </div>
+
+  <script>
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      // Display the uploaded image
+      const imagePreview = document.getElementById('imagePreview');
+      const uploadedImage = document.getElementById('uploadedImage');
+      uploadedImage.src = URL.createObjectURL(file);
+      imagePreview.classList.remove('hidden');
+
+      // Simulate prediction (replace with actual API call to PyTorch model)
+      const predictions = ['cat', 'dog', 'wild'];
+      const randomPrediction = predictions[Math.floor(Math.random() * predictions.length)];
+
+      // Display results
+      const results = document.getElementById('results');
+      const predictionText = document.getElementById('prediction');
+      const detailsText = document.getElementById('details');
+      results.classList.remove('hidden');
+
+      predictionText.textContent = `Predicted Class: ${randomPrediction.charAt(0).toUpperCase() + randomPrediction.slice(1)}`;
+
+      // Provide static details based on prediction
+      const animalDetails = {
+        cat: 'Cats are small, carnivorous mammals known for their agility and independent nature. They are often kept as pets and are skilled hunters.',
+        dog: 'Dogs are loyal, social animals known for their diverse breeds and strong bond with humans. They are often referred to as "man\'s best friend."',
+        wild: 'Wild animals, such as tigers or wolves, are untamed and live in natural habitats. They play a vital role in maintaining ecological balance.'
+      };
+      detailsText.textContent = animalDetails[randomPrediction];
+    }
+  </script>
+</body>
+</html>
